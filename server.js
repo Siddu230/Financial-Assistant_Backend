@@ -33,7 +33,7 @@ mongoose.connect(MONGODB_URI, {
 app.use(express.json({ limit: '10mb' })); // allow JSON bodies
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
-// CORS: allow Netlify origin or all if ALLOW_ALL_CORS=true
+
 if (ALLOW_ALL_CORS) {
   app.use(cors());
   console.log('CORS: allow all origins (ALLOW_ALL_CORS=true)');
@@ -55,7 +55,6 @@ if (ALLOW_ALL_CORS) {
 app.get('/api/health', (req, res) => res.json({ ok: true, env: process.env.NODE_ENV || 'development' }));
 
 // --- Mount your routes ---
-// Adjust these requires to match your codebase structure
 try {
   app.use('/api/auth', require('./routes/auth'));
   app.use('/api/transactions', require('./routes/transactions'));
@@ -64,7 +63,7 @@ try {
   console.warn('Route files not found - ensure ./routes/auth, ./routes/transactions, ./routes/upload exist.', err.message);
 }
 
-// Optional: serve frontend build if you want to host frontend from backend later
+// 
 if (process.env.SERVE_FRONTEND === 'true') {
   const buildPath = path.join(__dirname, '..', 'frontend', 'build');
   app.use(express.static(buildPath));
